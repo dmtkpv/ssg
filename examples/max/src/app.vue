@@ -24,6 +24,7 @@
 <script setup lang="ts">
 
     import { inject } from 'vue'
-    const state = inject('state');
+    import type { State } from '../types'
+    const state = inject<State>('state')!;
 
 </script>
