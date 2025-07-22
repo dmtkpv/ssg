@@ -25,16 +25,16 @@ declare module 'vue' {
 // Exports
 // ---------------------
 
-export default function <S> (
+export default async function <S> (
     component: Component,
     callback?: (app: App, state?: S) => void,
     selector: string = 'body'
 ) {
 
     const isSSR = typeof window === 'undefined';
-    const isDev = import.meta.env.DEV;
+    const isProd = import.meta.env.MODE === 'production';
 
-    if (isDev) {
+    if (!isProd) {
         const app = createApp(component);
         callback?.(app);
         app.mount(selector);
@@ -43,6 +43,7 @@ export default function <S> (
     else if (!isSSR) {
         const app = createSSRApp(component);
         callback?.(app, window.__INITIAL_STATE__ as S);
+        await app.config.globalProperties.$router?.isReady();
         app.mount(selector);
     }
 

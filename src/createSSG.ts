@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom'
 
 export default async function () {
 
-    process.env.NODE_ENV = 'production';
+    process.env.NODE_ENV ??= 'production';
 
 
 
@@ -30,6 +30,11 @@ export default async function () {
         const index = template.lastIndexOf('script type="module"');
         const matches = template.slice(index).match(/src="(.*)">/);
         return matches?.[1] || 'src/main'
+    }
+
+    function stringify (state: unknown) {
+        try { return JSON.stringify(state) }
+        catch (e) {}
     }
 
 
@@ -69,7 +74,8 @@ export default async function () {
 
     return async function <S> (path: string, state?: S) {
 
-        const app = await bundle.default(state);
+        const createApp = await bundle.default;
+        const app = createApp(state);
         const { $router, $head } = app.config.globalProperties;
 
         if ($router) {
@@ -85,17 +91,12 @@ export default async function () {
             await renderDOMHead($head, { document: doc });
         }
 
-        try {
-            const json = JSON.stringify(state);
-            const script = doc.createElement('script');
-            script.textContent = `window.__INITIAL_STATE__ = ${json}`;
-            doc.head.append(script);
-        }
-        catch {
-        }
+        const script = doc.createElement('script');
+        script.textContent = `window.__INITIAL_STATE__ = ${stringify(state)}`;
+        doc.head.append(script);
 
         const root = doc.querySelector(app.__selector);
-        root.innerHTML = html + root.innerHTML
+        root.innerHTML = html + root.innerHTML;
 
         const dir = join(dist, path);
         mkdirSync(dir, { recursive: true });
