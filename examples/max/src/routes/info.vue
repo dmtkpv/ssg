@@ -3,7 +3,7 @@
 -->
 
 <template>
-    <div>Version: {{ version }}</div>
+    <div>Info</div>
 </template>
 
 
@@ -14,6 +14,10 @@
 
 <script setup lang="ts">
 
-    const version = 1;
+    import { useHead } from '@unhead/vue'
+
+    useHead({
+        title: 'Info'
+    })
 
 </script>

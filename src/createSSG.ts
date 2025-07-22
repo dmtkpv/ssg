@@ -3,7 +3,6 @@ import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolveConfig, build } from 'vite'
 import { renderToString } from 'vue/server-renderer'
 import { JSDOM } from 'jsdom'
-import type { State } from './types'
 
 export default async function () {
 
@@ -68,22 +67,37 @@ export default async function () {
     // Exports
     // ---------------------
 
-    return async function (path: string, state: State) {
+    return async function <S> (path: string, state?: S) {
 
         const app = await bundle.default(state);
+        const { $router, $head } = app.config.globalProperties;
+
+        if ($router) {
+            await $router.push(path);
+        }
+
         const html = await renderToString(app);
         const dom = new JSDOM(template);
         const doc = dom.window.document;
 
-        const script = doc.createElement('script');
-        script.textContent = `window.__INITIAL_STATE__ = ${JSON.stringify(state)}`;
-        doc.head.append(script);
+        if ($head) {
+            const { renderDOMHead } = await import('@unhead/vue/client');
+            await renderDOMHead($head, { document: doc });
+        }
+
+        try {
+            const json = JSON.stringify(state);
+            const script = doc.createElement('script');
+            script.textContent = `window.__INITIAL_STATE__ = ${json}`;
+            doc.head.append(script);
+        }
+        catch {
+        }
 
         const root = doc.querySelector(app.__selector);
         root.innerHTML = html + root.innerHTML
 
         const dir = join(dist, path);
-
         mkdirSync(dir, { recursive: true });
         writeFileSync(join(dir, 'index.html'), dom.serialize());
 

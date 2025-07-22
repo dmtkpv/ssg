@@ -27,7 +27,7 @@ declare module 'vue' {
 
 export default function <S> (
     component: Component,
-    callback: (app: App, state?: S) => void,
+    callback?: (app: App, state?: S) => void,
     selector: string = 'body'
 ) {
 
@@ -36,20 +36,20 @@ export default function <S> (
 
     if (isDev) {
         const app = createApp(component);
-        callback(app);
+        callback?.(app);
         app.mount(selector);
     }
 
     else if (!isSSR) {
         const app = createSSRApp(component);
-        callback(app, window.__INITIAL_STATE__ as S);
+        callback?.(app, window.__INITIAL_STATE__ as S);
         app.mount(selector);
     }
 
     else return (state: S) => {
         const app = createSSRApp(component);
         app.__selector = selector
-        callback(app, state);
+        callback?.(app, state);
         return app;
     }
 

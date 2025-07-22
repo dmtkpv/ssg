@@ -1,5 +1,5 @@
 {
-  "name": "@this/min",
+  "name": "@this/max",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -7,7 +7,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.17"
+    "@unhead/vue": "^2.0.12",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@dmtkpv/ssg": "workspace:*",
