@@ -1,0 +1,50 @@
+{
+  "name": "@dmtkpv/ssg",
+  "type": "module",
+  "scripts": {
+    "min": "pnpm -F @this/min",
+    "max": "pnpm -F @this/max",
+    "build": "pnpm bundle --clean",
+    "watch": "pnpm bundle --watch",
+    "bundle": "tsup src/createApp.ts src/createRouter.ts src/createSSG.ts --dts --format esm"
+  },
+  "dependencies": {
+    "jsdom": "26.1.0"
+  },
+  "devDependencies": {
+    "@types/jsdom": "21.1.7",
+    "tsup": "^8.5.0",
+    "typescript": "5.8.3"
+  },
+  "peerDependencies": {
+    "@unhead/vue": ">=1",
+    "vite": ">=7",
+    "vue": ">=3",
+    "vue-router": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "@unhead/vue": {
+      "optional": true
+    },
+    "vue-router": {
+      "optional": true
+    }
+  },
+  "exports": {
+    "./createApp": {
+      "import": "./dist/createApp.js",
+      "types": "./dist/createApp.d.ts"
+    },
+    "./createRouter": {
+      "import": "./dist/createRouter.js",
+      "types": "./dist/createRouter.d.ts"
+    },
+    "./createSSG": {
+      "import": "./dist/createSSG.js",
+      "types": "./dist/createSSG.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ]
+}
