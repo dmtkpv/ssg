@@ -72,7 +72,7 @@ export default async function () {
     // Exports
     // ---------------------
 
-    return async function (path: string, state: unknown) {
+    return async function (path: string, state?: unknown) {
 
         const createApp = await bundle.default;
         const app = createApp(state);
