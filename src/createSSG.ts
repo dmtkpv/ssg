@@ -73,7 +73,7 @@ export default async function () {
     // Exports
     // ---------------------
 
-    return async function (path: string, state?: State) {
+    return async function (path: string, state: State = {}) {
 
         const setup = await (bundle.default as ReturnType<CreateSSGApp>);
         if (!setup) throw new Error('Browser environment detected');

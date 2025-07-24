@@ -28,5 +28,6 @@ export type State = Record<string, any>;
 
 export type CreateSSGApp = (
     component: Component,
-    callback: (context: { app: App; state: State; isSSR: boolean }) => void | Promise<void>
-) => Promise<((state?: State) => Promise<App>) | undefined>;
+    callback?: (context: { app: App; data: State; isSSR: boolean }) => void | Promise<void>,
+    selector?: string
+) => Promise<((state: State) => Promise<App>) | undefined>;
