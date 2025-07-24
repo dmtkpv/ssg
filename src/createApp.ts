@@ -4,7 +4,7 @@ import type { State, CreateSSGApp } from './types'
 const createSSGApp: CreateSSGApp = async function (component, callback, selector = 'body') {
 
     const isSSR = typeof window === 'undefined';
-    const isProd = import.meta.env.MODE === 'production';
+    const isProd = isSSR || import.meta.env.MODE === 'production';
 
     function getApp () {
         const app = isProd ? createSSRApp(component) : createApp(component);
