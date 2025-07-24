@@ -1,13 +1,11 @@
 {
   "name": "@dmtkpv/ssg",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "scripts": {
-    "min": "pnpm -F @this/min",
-    "max": "pnpm -F @this/max",
-    "build": "pnpm bundle --clean",
     "watch": "pnpm bundle --watch",
-    "bundle": "tsup src/createApp.ts src/createRouter.ts src/createSSG.ts --dts --format esm"
+    "bundle": "tsup src/createApp.ts src/createRouter.ts src/createSSG.ts --dts --format esm",
+    "publish": "tsc --noEmit && pnpm bundle --clean && pnpm publish"
   },
   "dependencies": {
     "jsdom": "26.1.0"

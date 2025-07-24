@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolveConfig, build } from 'vite'
 import { renderToString } from 'vue/server-renderer'
 import { JSDOM } from 'jsdom'
+import type { State, CreateSSGApp } from './types'
 
 export default async function () {
 
@@ -72,10 +73,12 @@ export default async function () {
     // Exports
     // ---------------------
 
-    return async function (path: string, state?: unknown) {
+    return async function (path: string, state?: State) {
 
-        const createApp = await bundle.default;
-        const app = createApp(state);
+        const setup = await (bundle.default as ReturnType<CreateSSGApp>);
+        if (!setup) throw new Error('Browser environment detected');
+
+        const app = await setup(state);
         const { $router, $head } = app.config.globalProperties;
 
         if ($router) {
@@ -96,6 +99,7 @@ export default async function () {
         doc.head.append(script);
 
         const root = doc.querySelector(app.__selector);
+        if (!root) throw new Error(`Missing selector: ${app.__selector}`);
         root.innerHTML = html + root.innerHTML;
 
         const dir = join(dist, path);
