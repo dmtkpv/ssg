@@ -16,9 +16,6 @@ export default createApp(App, ({ app, data, isSSR }) => {
     }
 
     app.provide('state', state);
-    app.mount('body');
-
-
 
 });
 

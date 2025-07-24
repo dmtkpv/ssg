@@ -1,5 +1,5 @@
 {
-  "name": "@this/min",
+  "name": "min",
   "type": "module",
   "scripts": {
     "dev": "vite",
