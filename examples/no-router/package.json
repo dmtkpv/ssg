@@ -1,18 +1,21 @@
 {
-  "name": "@this/min",
+  "name": "no-router",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "node build.ts",
+    "dev": "vite dev",
+    "build": "tsx build.ts",
     "preview": "serve dist"
   },
   "dependencies": {
-    "vue": "^3.5.17"
+    "@unhead/vue": "^2.0.12",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@dmtkpv/ssg": "workspace:*",
     "@vitejs/plugin-vue": "^6.0.0",
     "serve": "^14.2.4",
+    "tsx": "^4.20.3",
     "vite": "^7.0.5"
   }
 }
