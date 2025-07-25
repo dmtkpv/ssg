@@ -5,7 +5,8 @@
   "scripts": {
     "watch": "pnpm bundle --watch",
     "bundle": "tsup src/createApp.ts src/createRouter.ts src/createSSG.ts --dts --format esm",
-    "release": "vue-tsc --noEmit && pnpm bundle --clean && pnpm publish"
+    "typecheck": "vue-tsc --noEmit",
+    "release": "pnpm typecheck && pnpm bundle --clean && pnpm publish"
   },
   "dependencies": {
     "jsdom": "26.1.0"

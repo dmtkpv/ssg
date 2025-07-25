@@ -3,7 +3,8 @@ import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolveConfig, build } from 'vite'
 import { renderToString } from 'vue/server-renderer'
 import { JSDOM } from 'jsdom'
-import type { State, CreateSSGApp } from './types'
+import type { Data, CreateSSGApp } from './types'
+export type { Data, CreateSSGApp }
 
 export default async function () {
 
@@ -33,8 +34,8 @@ export default async function () {
         return matches?.[1] || 'src/main'
     }
 
-    function stringify (state: unknown) {
-        try { return JSON.stringify(state) }
+    function stringify (data: Data) {
+        try { return JSON.stringify(data) }
         catch (e) {}
     }
 
@@ -73,12 +74,12 @@ export default async function () {
     // Exports
     // ---------------------
 
-    return async function (path: string, state: State = {}) {
+    return async function (path: string, data: Data = {}) {
 
         const setup = await (bundle.default as ReturnType<CreateSSGApp>);
         if (!setup) throw new Error('Browser environment detected');
 
-        const app = await setup(state);
+        const app = await setup(data);
         const { $router, $head } = app.config.globalProperties;
 
         if ($router) {
@@ -95,7 +96,7 @@ export default async function () {
         }
 
         const script = doc.createElement('script');
-        script.textContent = `window.__INITIAL_STATE__ = ${stringify(state)}`;
+        script.textContent = `window.__INITIAL_DATA__ = ${stringify(data)}`;
         doc.head.append(script);
 
         const root = doc.querySelector(app.__selector);

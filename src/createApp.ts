@@ -1,5 +1,6 @@
 import { createApp, createSSRApp } from 'vue'
-import type { State, CreateSSGApp } from './types'
+import type { Data, CreateSSGApp } from './types'
+export type { Data, CreateSSGApp }
 
 const createSSGApp: CreateSSGApp = async function (component, callback, selector = 'body') {
 
@@ -12,7 +13,7 @@ const createSSGApp: CreateSSGApp = async function (component, callback, selector
         return app;
     }
 
-    async function setup (data: State) {
+    async function setup (data: Data) {
         const app = getApp();
         await callback?.({ app, data, isSSR });
         if (!isSSR) await app.config.globalProperties.$router?.isReady();
@@ -21,7 +22,7 @@ const createSSGApp: CreateSSGApp = async function (component, callback, selector
 
     if (isSSR) return setup;
     else {
-        const app = await setup(window.__INITIAL_STATE__ ?? {});
+        const app = await setup(window.__INITIAL_DATA__ ?? {});
         app.mount(app.__selector);
     }
 

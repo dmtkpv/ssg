@@ -8,7 +8,7 @@ import type { App, Component } from 'vue'
 
 declare global {
     interface Window {
-        __INITIAL_STATE__?: unknown
+        __INITIAL_DATA__?: unknown
     }
 }
 
@@ -24,10 +24,10 @@ declare module 'vue' {
 // Types
 // ---------------------
 
-export type State = Record<string, any>;
+export type Data = Record<string, any>;
 
 export type CreateSSGApp = (
     component: Component,
-    callback?: (context: { app: App; data: State; isSSR: boolean }) => void | Promise<void>,
+    callback?: (context: { app: App; data: Data; isSSR: boolean }) => void | Promise<void>,
     selector?: string
-) => Promise<((state: State) => Promise<App>) | undefined>;
+) => Promise<((data: Data) => Promise<App>) | undefined>;
