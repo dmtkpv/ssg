@@ -43,4 +43,4 @@ export default createApp(App, ({ app }) => {
 ## Examples
 
 [Minimal](https://github.com/dmtkpv/ssg/tree/main/examples/min)  
-[Vue router and Unhead](https://github.com/dmtkpv/ssg/tree/main/examples/min)
+[Vue router and Unhead](https://github.com/dmtkpv/ssg/tree/main/examples/router)
